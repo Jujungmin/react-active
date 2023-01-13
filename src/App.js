@@ -1,8 +1,20 @@
+import React from 'react';
+// import Hello from './Hello';
+// import Wrapper from './Wrapper';
+// import './App.css';
+// import Counter from './Counter';
+import InputSample from './InputSample';
+
 function App() {
-  return (
-    <div className="App">
-    </div>
-  );
+	// const name = 'react';
+	return (
+		// <Wrapper>
+		// 	<Hello name="react" color="red" isSpecial={true} />
+		// 	<Hello color="pink" />
+		// </Wrapper>
+		// <Counter />
+		<InputSample />
+	)
 }
 
 export default App;
