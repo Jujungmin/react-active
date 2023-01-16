@@ -6,13 +6,7 @@ import React from 'react';
 import InputSample from './InputSample';
 
 function App() {
-	// const name = 'react';
 	return (
-		// <Wrapper>
-		// 	<Hello name="react" color="red" isSpecial={true} />
-		// 	<Hello color="pink" />
-		// </Wrapper>
-		// <Counter />
 		<InputSample />
 	)
 }

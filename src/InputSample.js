@@ -3,23 +3,23 @@ import React, { useState } from 'react';
 function InputSample() {
 	const [inputs, setInputs] = useState({
 		name: '',
-		nickname: '',
+		nickname: ''
 	});
 
-	const {name, nickname} = inputs;
+	const { name, nickname } = inputs;
 
 	const onChange = (e) => {
-		const {value, name} = e.target;
+		const { value, name } = e.target;
 		setInputs({
 			...inputs,
 			[name]: value
-		})
+		});
 	};
 
 	const onReset = (e) => {
 		setInputs({
 			name: '',
-			nickname: '',
+			nickname: ''
 		})
 	}
 
@@ -30,7 +30,7 @@ function InputSample() {
 			<button onClick={onReset}>초기화</button>
 			<div>
 				<strong>값: </strong>
-				{name} {nickname}
+				{name} ({nickname})
 			</div>
 		</div>
 	)

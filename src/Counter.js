@@ -4,12 +4,14 @@ function Counter() {
 	const [number, setNumber] = useState(0);
 
 	const onIncrease = () => {
-		// setNumber(number + 1);
-		setNumber(prevNumber => prevNumber + 1);
+		setNumber(number + 1);
+		console.dir(number, '+')
+		// setNumber(prevNumber => prevNumber + 1);
 	}
 	const onDecrease = () => {
 		// setNumber(number - 1);
 		setNumber(prevNumber => prevNumber - 1);
+		console.dir(number, '-')
 	}
 
 	return (
