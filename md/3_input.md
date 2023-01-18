@@ -41,8 +41,10 @@ function InputSample() {
         nickname: ''
     });
 
+    const { name, nickname } = inputs; // 비구조화 할당을 통해 값 추출.
+
     const onChange = (e) => {
-        const { value, name } = e.target; // 우선 e.target에서 name과 value추출.
+        const { value, name } = e.target; // 우선 e.target에서 name과 value추출.(이벤트로 인한 실시간 값 변화 추출)
         setInputs({
             ...inputs, // 기존의 input 객체를 복사한 뒤
             [name]: value // name키를 가진 값을 value로 설정.
@@ -81,4 +83,4 @@ setInputs({
 ```
 이러한 작업을 "불변성을 지킨다"라고 부른다. 불변성을 지켜주어야만 리액트 컴포넌트에서 상태가 업데이트 됐음을 감지하며 이에 따라 리렌더링이 진행된다.<br/>만약, `inputs[name] = value` 이런 식으로 기존상태를 직접 수정하게 되면, 값을 바꿔도 리렌더링이 되지 않는다.
 > 정리!
-> 리액트에서 객체를 업데이트하게 될 때에는 기존 겍체를 직접 수정하면 안되고,<br/>새로운 객체를 만들어서, 새 객체에 변화를 주어야 한다.
+> 리액트에서 객체를 업데이트하게 될 때에는 기존 겍체를 직접 수정하면 안되고,<br/>**새로운 객체**를 만들어서, 새 객체에 변화를 주어야 한다.

@@ -85,7 +85,7 @@ export default Counter;
 
 이 코드는 리액트 패키지에서 `useState`라는 함수를 불러와준다.<br/>
 `const [number, setNumber] = useState(0)`<br/>
-`useState`를 사용할 때에는 상태의 기본값을 파라미터로 넣어서 호출해준다. 이 함수를 호출해주면 **배열이 반환**되는데,<br/>
+`useState`를 사용할 때에는 **상태의 기본값을 파라미터로 넣어서 호출**해준다. 이 함수를 호출해주면 **배열이 반환**되는데,<br/>
 첫 번째 원소는 현재 상태, 두 번째 원소는 *Setter함수이다.
 > - Setter함수란?
 > 
