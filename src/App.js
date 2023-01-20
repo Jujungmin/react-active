@@ -7,7 +7,7 @@ function App() {
 		username: '',
 		email: ''
 	});
-	const { username, email } = inputs;
+	const { username, email } = inputs; // 위의 빈 값들
 
 	const onChange = e => {
 		const { name, value } = e.target;
@@ -36,19 +36,30 @@ function App() {
 	]);
 
 	const nextId = useRef(4);
+
+	// console.log(nextId);
+
 	const onCreate = () => {
 		const user = {
 			id: nextId.current,
 			username,
 			email
 		};
-		setUsers(users.concat(user));
+		setUsers([...users, user]);
+		// setUsers(users.concat(user));
 
 		setInputs({
 			username: '',
 			email: ''
 		});
-		nextId.current += 1;
+		nextId.current += 1; // 추가 시 nextId 1씩 증가.
+	};
+
+	const onRemove = (id) => {
+		// user.id가 파라미터로 일치하지 않는 원소만 추출해서 새로운 배열을 만듬.
+		// = user.id가 id인 것을 제거함.
+		// console.log(id)
+		setUsers(users.filter(user => user.id !== id));
 	}
 	return (
 		<>
@@ -58,7 +69,7 @@ function App() {
 				onChange={onChange}
 				onCreate={onCreate}
 			/>
-			<UserList list={users} />
+			<UserList list={users} onRemove={onRemove} />
 		</>
 	)
 }
