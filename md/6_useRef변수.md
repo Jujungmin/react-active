@@ -285,17 +285,160 @@ export default App;
 {/* UserList */}
 import React from 'react';
 
+// Info() DOM 만들기
 function Info({ user, onRemove }) {
 	<div>
 		<b>{user.username}</b> <span>({user.email})</span>
 		<button onClick={() => onRemove(user.id)}>삭제</button>
+		{/* 
+			Q. onClick={() => onRemove(user.id)} 왜 onclick={onRemove(user.id)가 아닐까? 
+			A.	보통 onClick={someFunc}으로 지정해 ()를 제외하는 방법으로 함수가 즉시 실행되지 않게 해준다.
+				그런데 onRemove와 같은 경우, 해당 함수가 실행될 때 아이디 값도 받아와야 한다.
+				onRemove={onRemove(user.id)}해버리면 해당 컴포넌트가 렌더링됨가 동시에 이 함수가 실행되어서 아무것도 렌더링되지 않을 것이다.
+				=> 이런 문제를 해결하기 위해 onClick에 콜백함수를 넣어주고 해당함수가 실행될 때 user.id를 건네주어 실행시키는 방법으로 처리힌다.
+		*/}
 	</div>
 };
 
+// UserList() DOM 뿌리기
 function UserList({ list, onRemove }) {
 	return (
-		
+		<div>
+			{list && list.map(mapuser => (
+				<Info user={mapuser} key={mapuser.id} onRemove={onRemove} />
+			))}
+		</div>
 	)
 }
+export default UserList;
+``` 
+
+## 배열에 항목 수정하기
+User컴포넌트에 계정명 클릭시 색상이 빨강색으로 바뀌고 다시 누르면 검정색으로 바뀌도록 구현해보자.<br/>우선, App컴포넌트의 users배열안의 객체 안에 `active`라는 속성을 추가하자.
+``` javascript
+{/* App */}
+import React, { useState, useRef } from 'react';
+import UserList from './UserList';
+import CreateUser from './CreateUser';
+
+function App() {
+	const [inputs, setInputs] = useState({
+		username: '',
+		email: ''
+	});
+
+	const { username, email } = inputs;
+
+	const onChange = e => {
+		const { name, value } = e.target;
+		setInputs({
+			...inputs,
+			[name]: value
+		});
+	};
+
+	const [users, setUsers] = useState([
+		{
+			id: 1,
+			username: 'velopert',
+			email: 'public.velopert@gmail.com',
+			active: true,
+		},
+		{
+			id: 2,
+			username: 'tester',
+			email: 'tester@gmail.com',
+			active: false,
+		},
+		{
+			id: 3,
+			username: 'liz',
+			email: 'liz@example.com',
+			active: false,
+		}
+	]);
+
+	const nextId = useRef(4);
+
+	const onCreate = () => {
+		 const user = {
+			id: nextId.current,
+			username,
+			email
+		 };
+		setusers(users.concat(user));
+
+		setInputs({
+			username: '',
+			email: ''
+		});
+		nextid.current += 1;
+	};
+
+	const onRemove = (id) => {
+		// user.id가 파라미터로 일치하지 않는 원소만 추출해서 새로운 배열 만듬.
+		// = user.id가 id인 것을 제거함.
+		// console.log(id)
+		setUsers(users.filter(user => user.id !== id));
+	};
+
+	const onToggle = id => {
+		setUsers(
+			users.map(mapuser => (
+				// map사용할 때도 기존 배열 복사 한 후, id 값을 비교했을 때 id가 다르면 그대로두고, 같다면 active 값 반전. 
+				mapuser.id === id ? {...mapuser, active: !mapuser.active} : mapuser
+			))
+		)
+	};
+
+	return (
+		<>
+			<CreateUser
+				username={username}
+				email={email}
+				onChange={onChange}
+				onCreate={onCreate}
+			/>
+			<UserList list={users} onRemove={onRemove} onToggle={onToggle} />
+		</>
+	)
+}
+
+export default App;
+```
+
+UserList 컴포넌트에서 방금 넣어준 `active`값에 따라 폰트 컬러를 바꿔보자.
+``` javascript
+{/* UserList */}
+import React from 'react';
+
+function Info({ user, onRemove, onToggle }) {
+	return (
+		<div>
+			<b style={{
+				cursor: 'poninter',
+				color: user.active ? 'red' : 'black'
+			}}
+			onClick={() => onToggle(user.id)}
+			>
+				{user.username}
+			</b>
+			&nbsp;
+			<span>({user.email})</span>
+			<button onClick={() => onRemove(user.id)}>삭제</button>
+		</div>
+	)
+}
+
+function UserList({ list, onRemove, onToggle }) {
+	return (
+		<div>
+			{list && list.map(mapuser => (
+				<Info user={mapuser} key={mapuser.id} onRemove={onRemove} onToggle={onToggle} />
+			))}
+		</div>
+	)
+}
+
 export default UserList;
 ```

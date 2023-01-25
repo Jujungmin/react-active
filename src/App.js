@@ -21,17 +21,20 @@ function App() {
 		{
 			id: 1,
 			username: 'velopert',
-			email: 'public.velopert@gmail.com'
+			email: 'public.velopert@gmail.com',
+			active: true,
 		},
 		{
 			id: 2,
 			username: 'tester',
-			email: 'tester@gmail.com'
+			email: 'tester@gmail.com',
+			active: false,
 		},
 		{
 			id: 3,
 			username: 'liz',
-			email: 'liz@example.com'
+			email: 'liz@example.com',
+			active: false,
 		}
 	]);
 
@@ -45,8 +48,8 @@ function App() {
 			username,
 			email
 		};
-		setUsers([...users, user]);
-		// setUsers(users.concat(user));
+		// setUsers([...users, user]);
+		setUsers(users.concat(user));
 
 		setInputs({
 			username: '',
@@ -61,6 +64,15 @@ function App() {
 		// console.log(id)
 		setUsers(users.filter(user => user.id !== id));
 	}
+
+	const onToggle = id => {
+		setUsers(
+			users.map(mapuser => (
+				// map사용할 때도 기존 배열 복사 한 후, id 값을 비교했을 때 id가 다르면 그대로두고, 같다면 active 값 반전. 
+				mapuser.id === id ? {...mapuser, active: !mapuser.active} : mapuser
+			))
+		)
+	}
 	return (
 		<>
 			<CreateUser
@@ -69,7 +81,7 @@ function App() {
 				onChange={onChange}
 				onCreate={onCreate}
 			/>
-			<UserList list={users} onRemove={onRemove} />
+			<UserList list={users} onRemove={onRemove} onToggle={onToggle} />
 		</>
 	)
 }
