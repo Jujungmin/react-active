@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import UserList from './UserList';
 import CreateUser from './CreateUser';
+import CounterByClass from './CounterByClass';
 
 function App() {
 	const [inputs, setInputs] = useState({
@@ -82,6 +83,8 @@ function App() {
 				onCreate={onCreate}
 			/>
 			<UserList list={users} onRemove={onRemove} onToggle={onToggle} />
+
+			<CounterByClass />
 		</>
 	)
 }
