@@ -11,12 +11,13 @@ import React, { useEffect } from 'react';
 // Info() DOM 만들기
 function Info({ user, onRemove, onToggle }) {
 	useEffect(() => {
-		console.log('컴포넌트가 화면에 나타남');
-		console.log('useEffect: ', user);
-		return () => {
-			console.log('컴포넌트가 화면에 사라짐');
-			console.log('return: ',user);
-		}
+		// console.log('user값이 설정됨');
+		// console.log(user);
+		
+		// return() => {
+		// 	console.log('user가 바뀌기 전..');
+		// 	console.log(user);
+		// }
 	}, [user]);
 	return (
 		<div>
@@ -39,9 +40,9 @@ function Info({ user, onRemove, onToggle }) {
 function UserList({ list, onRemove, onToggle }) {
 	return (
 		<div>
-			{list && list.map(mapuser => (
-				<Info user={mapuser} key={mapuser.id} onRemove={onRemove} onToggle={onToggle} />
-			))}
+			{list.map(mapuser => {
+				return <Info user={mapuser} key={mapuser.id} onRemove={onRemove} onToggle={onToggle} />
+			})}
 		</div>
 	)
 }

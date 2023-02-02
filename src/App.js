@@ -1,21 +1,30 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import UserList from './UserList';
 import CreateUser from './CreateUser';
-import CounterByClass from './CounterByClass';
+// import CounterByClass from './CounterByClass';
+
+function countActiveUsers(aa) {
+	console.log('활성 사용자 수를 세는 중..');
+	return aa.filter(user => user.active).length;
+}
 
 function App() {
 	const [inputs, setInputs] = useState({
 		username: '',
 		email: ''
 	});
-	const { username, email } = inputs; // 위의 빈 값들
+
+	const { username, email } = inputs;
+
+	// console.log(inputs); // {username: '', email: ''}
 
 	const onChange = e => {
-		const { name, value } = e.target;
+		const { name, value } = e.target; // input의 name과 value 값
 		setInputs({
 			...inputs,
 			[name]: value
 		});
+		console.log(name, value); // name은 각각 username, email 가리킨다.
 	};
 
 	const [users, setUsers] = useState([
@@ -49,7 +58,7 @@ function App() {
 			username,
 			email
 		};
-		// setUsers([...users, user]);
+		// setUsers([...users, user]); 기존에 있는 users복사 후 수정된 user를 setUsers에 넣기
 		setUsers(users.concat(user));
 
 		setInputs({
@@ -74,6 +83,11 @@ function App() {
 			))
 		)
 	}
+	// input을 추가해서 user를 클릭해도 리렌더링되지 않는다. {count}만 업데이트
+	const count = useMemo(() => countActiveUsers(users), [users]);
+	// input을 추가하면 리렌더링된다. 
+	// const count = countActiveUsers(users)
+
 	return (
 		<>
 			<CreateUser
@@ -83,8 +97,7 @@ function App() {
 				onCreate={onCreate}
 			/>
 			<UserList list={users} onRemove={onRemove} onToggle={onToggle} />
-
-			<CounterByClass />
+			<div>활성사용자 수 : {count}</div>
 		</>
 	)
 }

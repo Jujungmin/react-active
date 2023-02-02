@@ -9,10 +9,10 @@
 
 App 컴포넌트에서 `useRef`를 사용해 변수를 관리해보자. 용도는 배열에서 새 항목에서 사용할 고유 id를 관리하는 용도이다.
 ``` javascript
-{/* Createuser */}
+{/* CreateUser */}
 import React from 'react';
 
-function Createuser({ username, email, onChange, onCreate }) {
+function CreateUser({ username, email, onChange, onCreate }) {
 	return (
 		<div>
 			<input
@@ -22,7 +22,7 @@ function Createuser({ username, email, onChange, onCreate }) {
 				value={username}
 			/>
 			<input
-				name="email",
+				name="email"
 				placeholer="이메일"
 				onChange={onChange}
 				value={email}
@@ -294,8 +294,10 @@ function Info({ user, onRemove }) {
 			Q. onClick={() => onRemove(user.id)} 왜 onclick={onRemove(user.id)가 아닐까? 
 			A.	보통 onClick={someFunc}으로 지정해 ()를 제외하는 방법으로 함수가 즉시 실행되지 않게 해준다.
 				그런데 onRemove와 같은 경우, 해당 함수가 실행될 때 아이디 값도 받아와야 한다.
-				onRemove={onRemove(user.id)}해버리면 해당 컴포넌트가 렌더링됨가 동시에 이 함수가 실행되어서 아무것도 렌더링되지 않을 것이다.
-				=> 이런 문제를 해결하기 위해 onClick에 콜백함수를 넣어주고 해당함수가 실행될 때 user.id를 건네주어 실행시키는 방법으로 처리힌다.
+				onRemove={onRemove(user.id)}해버리면 해당 컴포넌트가 렌더링됨가 동시에 이 함수가 실행되어서
+				아무것도 렌더링되지 않을 것이다.
+				=> 이런 문제를 해결하기 위해 onClick에 콜백함수를 넣어주고 해당함수가 실행될 때 user.id를 건네주어
+				실행시키는 방법으로 처리힌다.
 		*/}
 	</div>
 };
