@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo } from 'react';
+import React, { useRef, useState, useMemo, useCallback } from 'react';
 import UserList from './UserList';
 import CreateUser from './CreateUser';
 // import CounterByClass from './CounterByClass';
@@ -16,16 +16,22 @@ function App() {
 
 	const { username, email } = inputs;
 
-	// console.log(inputs); // {username: '', email: ''}
+	// const onChange = e => {
+	// 	const { name, value } = e.target; // input의 name과 value 값
+	// 	setInputs({
+	// 		...inputs,
+	// 		[name]: value
+	// 	});
+	// 	console.log(name, value); // name은 각각 username, email 가리킨다.
+	// };
 
-	const onChange = e => {
-		const { name, value } = e.target; // input의 name과 value 값
-		setInputs({
-			...inputs,
-			[name]: value
-		});
-		console.log(name, value); // name은 각각 username, email 가리킨다.
-	};
+	const onChange = useCallback(e => {
+			const { name, value } = e.target;
+			setInputs({
+				...inputs,
+				[name]: value
+			});
+		}, [inputs]);
 
 	const [users, setUsers] = useState([
 		{
@@ -52,37 +58,65 @@ function App() {
 
 	// console.log(nextId);
 
-	const onCreate = () => {
+	// const onCreate = () => {
+	// 	const user = {
+	// 		id: nextId.current,
+	// 		username,
+	// 		email
+	// 	};
+	// 	// setUsers([...users, user]); 기존에 있는 users복사 후 수정된 user를 setUsers에 넣기
+	// 	setUsers(users.concat(user));
+
+	// 	setInputs({
+	// 		username: '',
+	// 		email: ''
+	// 	});
+	// 	nextId.current += 1; // 추가 시 nextId 1씩 증가.
+	// };
+
+	const onCreate = useCallback(() => {
 		const user = {
 			id: nextId.current,
 			username,
 			email
-		};
-		// setUsers([...users, user]); 기존에 있는 users복사 후 수정된 user를 setUsers에 넣기
+		}
 		setUsers(users.concat(user));
 
 		setInputs({
 			username: '',
 			email: ''
 		});
-		nextId.current += 1; // 추가 시 nextId 1씩 증가.
-	};
+		nextId.current += 1;
+	}, [users, username, email]);
 
-	const onRemove = (id) => {
-		// user.id가 파라미터로 일치하지 않는 원소만 추출해서 새로운 배열을 만듬.
-		// = user.id가 id인 것을 제거함.
-		// console.log(id)
+	// const onRemove = (id) => {
+	// 	// user.id가 파라미터로 일치하지 않는 원소만 추출해서 새로운 배열을 만듬.
+	// 	// = user.id가 id인 것을 제거함.
+	// 	// console.log(id)
+	// 	setUsers(users.filter(user => user.id !== id));
+	// }
+
+	const onRemove = useCallback((id) => {
 		setUsers(users.filter(user => user.id !== id));
-	}
+	}, [users]);
 
-	const onToggle = id => {
+	// const onToggle = id => {
+	// 	setUsers(
+	// 		users.map(mapuser => (
+	// 			// map사용할 때도 기존 배열 복사 한 후, id 값을 비교했을 때 id가 다르면 그대로두고, 같다면 active 값 반전. 
+	// 			mapuser.id === id ? {...mapuser, active: !mapuser.active} : mapuser
+	// 		))
+	// 	)
+	// }
+
+	const onToggle = useCallback((id) => {
 		setUsers(
-			users.map(mapuser => (
-				// map사용할 때도 기존 배열 복사 한 후, id 값을 비교했을 때 id가 다르면 그대로두고, 같다면 active 값 반전. 
-				mapuser.id === id ? {...mapuser, active: !mapuser.active} : mapuser
+			users.map((mapuser) => (
+				mapuser.id === id ? { ...mapuser, active: !mapuser.active } : mapuser
 			))
 		)
-	}
+	}, [users]);
+
 	// input을 추가해서 user를 클릭해도 리렌더링되지 않는다. {count}만 업데이트
 	const count = useMemo(() => countActiveUsers(users), [users]);
 	// input을 추가하면 리렌더링된다. 
